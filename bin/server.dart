@@ -5,10 +5,7 @@ import 'dart:io';
 
 import 'package:dart_frog/dart_frog.dart';
 
-
 import '../routes/index.dart' as index;
-import '../routes/hello.dart' as hello;
-
 
 void main() async {
   final address = InternetAddress.anyIPv6;
@@ -25,15 +22,22 @@ Future<HttpServer> createServer(InternetAddress address, int port) async {
 
 Handler buildRootHandler() {
   final pipeline = const Pipeline();
-  final router = Router()
-    ..mount('/', (context) => buildHandler()(context));
+  final router = Router()..mount('/', (context) => buildHandler()(context));
   return pipeline.addHandler(router);
 }
 
 Handler buildHandler() {
   final pipeline = const Pipeline();
   final router = Router()
-    ..all('/', (context) => index.onRequest(context,))..all('/hello', (context) => hello.onRequest(context,));
+    ..all(
+        '/',
+        (context) => index.onRequest(
+              context,
+            ))
+    ..all(
+        '/hello',
+        (context) => hello.onRequest(
+              context,
+            ));
   return pipeline.addHandler(router);
 }
-
