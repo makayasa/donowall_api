@@ -1,35 +1,29 @@
-import 'package:dart_frog/dart_frog.dart';
+import 'dart:developer';
 
-// Response onRequest(RequestContext context) {
-//   // TODO: implement route handler
-//   final req = context.request;
-//   final params = req.uri.queryParameters;
-//   final id = params['id'];
-//   // final a = context.read<Map<String, dynamic>>();
-//   final a = context.read<Map<String, dynamic>>();
-//   // return Response(body: 'ini user dengan id : $id');
-//   return Response.json(
-//     body: {
-//       'User': id ?? 'Kosong',
-//       // 'aaa': json.decode(a),
-//       'aaa': a,
-//     },
-//   );
-// }
+import 'package:dart_frog/dart_frog.dart';
+import 'package:donowall/models/user/user_model.dart';
+
+import '_middleware.dart';
 
 Future<Response> onRequest(RequestContext context) async {
-  // TODO: implement route handler
   final req = context.request;
-  final params = req.uri.queryParameters;
-  final id = params['id'];
-  // final a = context.read<Map<String, dynamic>>();
-  final a = await context.read<Future<Map<String, dynamic>>>();
-  // return Response(body: 'ini user dengan id : $id');
+  final method = req.method.value;
+  if (method != 'GET' && method != 'POST') {
+    return Response(statusCode: 404);
+  }
+
+  // final dataUser = await context.read<List<Map>>();
+  // final dataUser = await context.readAsync<List<UserModel>>();
+
+  log('method $method');
+  // TODO: implement route handler
+  // return Response(body: 'This is a new route!');
   return Response.json(
-    body: {
-      'User': id ?? 'Kosong',
-      // 'aaa': json.decode(a),
-      'aaa': a,
-    },
+    // body: {'users': dataUser},
+    body: {},
+    // body: {
+    //   'name': 'Makayasa',
+    //   'method': method,
+    // },
   );
 }

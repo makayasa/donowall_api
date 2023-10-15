@@ -1,5 +1,5 @@
 import 'package:dart_frog/dart_frog.dart';
-import 'package:donowall/function_utils.dart';
+import 'package:donowall/utils/function_utils.dart';
 
 Handler middleware(Handler handler) {
   final data = {'Nama': 'Makayasa', 'id': ''};

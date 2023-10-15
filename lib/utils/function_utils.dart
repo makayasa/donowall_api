@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:developer' as dev;
 
+import 'package:dart_frog/dart_frog.dart';
+
 void logKey([key, content]) {
   String finalLog = '';
   dynamic tempContent = content ?? key;
@@ -21,4 +23,12 @@ void logKey([key, content]) {
   } else {
     dev.log(finalLog);
   }
+}
+
+void justPrint(String arg) {
+  print(arg);
+}
+
+extension ReadAsync on RequestContext {
+  Future<T> readAsync<T extends Object>() => read<Future<T>>();
 }
