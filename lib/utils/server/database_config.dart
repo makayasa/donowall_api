@@ -83,16 +83,28 @@ class DatabaseConfig {
     final query = '''SELECT * FROM "user" WHERE email = '$email'; ''';
     try {
       final rawUser = await connection.mappedResultsQuery(query);
-      final _user = rawUser.first['user'];
-      // logKey('rawUser', rawUser.first);
       // logKey('_user', _user);
-      if (rawUser.isEmpty || _user == null) {
+      if (rawUser.isEmpty) {
         return null;
       }
-      return UserModel.fromJson(_user);
+      final user = rawUser.first['user'];
+      final userModel = UserModel.fromJson(user!);
+      return userModel;
     } on PostgreSQLException catch (e) {
-      logKey('error getUserByEmail');
+      logKey('error getUserByEmail', e.message);
       return null;
+    }
+  }
+
+  Future<void> insertToken(String userUUid, String token) async {
+    final query = ''' INSERT INTO token (uuid, token, user_uuid, expired_date) 
+    VALUES 
+      (uuid_generate_v4(), '$token', '$userUUid', CURRENT_TIMESTAMP + INTERVAL '1 week'); ''';
+    try {
+      final result = await connection.mappedResultsQuery(query);
+      logKey('inserToken', result);
+    } on PostgreSQLException catch (e) {
+      logKey('error inserToken', e);
     }
   }
 }

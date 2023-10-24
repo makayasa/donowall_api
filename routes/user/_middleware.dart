@@ -1,4 +1,5 @@
 import 'package:dart_frog/dart_frog.dart';
+import 'package:donowall/models/http_status.dart';
 import 'package:donowall/utils/function_utils.dart';
 
 Handler middleware(Handler handler) {
@@ -14,7 +15,7 @@ Handler middleware(Handler handler) {
 
   // return handler.use(provider<String>((context) => json.encode(data)));
   // return handler.use(provider<Map<String, dynamic>>((context) => data));
-  return handler.use(asyncGreetingProvider());
+  return handler.use(testBlock());
   // return handler.use(provider<dynamic>((context) => data));
 
   // return handler.use(
@@ -47,4 +48,12 @@ Middleware asyncGreetingProvider() {
     data['id'] = id ?? 'kosong';
     return data;
   });
+}
+
+Middleware testBlock() {
+  return (handler) => (context) async {
+        return Response(
+          statusCode: HttpStatus.unauthorized,
+        );
+      };
 }
