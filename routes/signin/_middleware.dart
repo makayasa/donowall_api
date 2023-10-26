@@ -9,6 +9,7 @@ import 'package:donowall/models/signin/signin_model.dart';
 import 'package:donowall/models/user/user_model.dart';
 import 'package:donowall/utils/function_utils.dart';
 import 'package:donowall/utils/server/database_config.dart';
+import 'package:hive/hive.dart';
 
 Handler middleware(Handler handler) {
   return (context) async {
@@ -47,6 +48,19 @@ Future<String?> signIn(String email, String password) async {
   }
   // logKey('res db', res);
   final token = generateJwt(res);
+
+  // final box = Hive.box('token');
+  final box = await Hive.openBox('token');
+  // box.add('asd');
+  box.put(res.uuid, token);
+  final data = box.get(res.uuid);
+  final map = box.toMap();
+  logKey('data', data);
+  logKey('map', map);
+  // await box.put(res.uuid, token);
+  // final d = a.get(res.uuid);
+  // final data = box.get(res.uuid);
+  // logKey('isi hive', box.isOpen);
 
   // logKey('token', token);
   await db.insertToken(res.uuid, token);
