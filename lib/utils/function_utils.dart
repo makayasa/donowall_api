@@ -6,7 +6,8 @@ import 'package:dart_frog/dart_frog.dart';
 void logKey([key, content]) {
   String finalLog = '';
   dynamic tempContent = content ?? key;
-  if (tempContent is Map || tempContent is List) {
+  print(tempContent.runtimeType);
+  if (tempContent is Map || tempContent is List  ) {
     try {
       finalLog = json.encode(tempContent);
     } catch (e) {

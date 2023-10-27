@@ -8,7 +8,7 @@ import '_middleware.dart';
 Future<Response> onRequest(RequestContext context) async {
   final req = context.request;
   final method = req.method.value;
-  if (method != 'GET' && method != 'POST') {
+  if (method != 'GET') {
     return Response(statusCode: 404);
   }
 
@@ -20,7 +20,9 @@ Future<Response> onRequest(RequestContext context) async {
   // return Response(body: 'This is a new route!');
   return Response.json(
     // body: {'users': dataUser},
-    body: {},
+    body: {
+      'success': 'ok',
+    },
     // body: {
     //   'name': 'Makayasa',
     //   'method': method,

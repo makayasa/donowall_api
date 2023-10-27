@@ -1,4 +1,5 @@
 import 'package:dart_frog/dart_frog.dart';
+import 'package:donowall/middleware/authenticator.dart';
 import 'package:donowall/models/http_status.dart';
 import 'package:donowall/utils/function_utils.dart';
 
@@ -15,7 +16,7 @@ Handler middleware(Handler handler) {
 
   // return handler.use(provider<String>((context) => json.encode(data)));
   // return handler.use(provider<Map<String, dynamic>>((context) => data));
-  return handler.use(testBlock());
+  return handler.use(authenticator());
   // return handler.use(provider<dynamic>((context) => data));
 
   // return handler.use(

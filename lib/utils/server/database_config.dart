@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, lines_longer_than_80_chars
 //ignore_for_file: argument_type_not_assignable
 
+import 'dart:convert';
+
 import 'package:donowall/models/user/user_model.dart';
 import 'package:donowall/utils/function_utils.dart';
 import 'package:postgres/postgres.dart';
@@ -105,6 +107,37 @@ class DatabaseConfig {
       logKey('inserToken', result);
     } on PostgreSQLException catch (e) {
       logKey('error inserToken', e);
+    }
+  }
+
+  Future<void> checkToken(String token) async {
+    // final query = '''
+    // SELECT * from "token" t
+    // WHERE t."token" = '$token'
+    // ''';
+
+    final query = ''' 
+    select 
+      t.uuid as uuid,
+      t."token" as user_token,
+      t.expired_date,
+      u.uuid as user_uuid,
+      u.name as user_name,
+      u.email as user_email
+    from "token" t 
+    join "user" u 
+    on t.user_uuid = u.uuid 
+    where t.token = '$token'
+    ''';
+    // logKey('query', query);
+    try {
+      final result = await connection.mappedResultsQuery(query);
+      final resString = result.first.toString();
+      final decode = json.encode(resString);
+      // logKey('res checkToken', resString);
+      logKey('decode',decode);
+    } on PostgreSQLException catch (e) {
+      logKey('error checkToken', e.message);
     }
   }
 }
